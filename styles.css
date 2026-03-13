@@ -473,7 +473,7 @@ html, body {
     pointer-events: none;
     white-space: nowrap;
     font-family: 'DM Mono', monospace;
-    z-index: 9999;
+    z-index: 99999999;
 }
 
 .toast.show {
