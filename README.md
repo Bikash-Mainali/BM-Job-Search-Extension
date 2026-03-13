@@ -1,12 +1,19 @@
 # BM Job Search Extension
 
-## Project Description
-BM Job Search Extension is a Chrome extension designed to enhance your job searching experience by aggregating listings from various job boards. This tool helps you find the best opportunities without constantly switching between websites.
+## Description
+BM-JobSearch is a Chrome extension for job seekers who are tired of manually scanning through dozens of postings. Define a personal list of keywords — skills, roles, work arrangements, seniority levels — and instantly highlight every match on any job listing page, so the signal jumps out without reading every line.
+The extension also solves a specific pain point for candidates who require visa sponsorship: it automatically scans the page for known positive and negative sponsorship language, surfacing phrases like "visa sponsorship available" or "must be authorized to work without sponsorship" the moment you click Highlight. No more reaching the end of a detailed job description only to find a disqualifying line buried in the fine print.
+Keywords and sponsorship phrase lists are saved locally in the browser and persist across sessions. Works on any job board or company careers page — no accounts, no external servers, no tracking.
 
 ## Features
-- Aggregate job listings from multiple sites.
-- Apply filters based on job type, location, and salary.
-- User-friendly interface for easy navigation.
+1. Keyword Highlighting — Add any keywords and highlight all matches on the active tab instantly
+2. Sponsorship Detection — Scans the page for visa sponsorship signals and labels them 🟢 positive or 🔴 negative
+3. Built-in Phrase Library — Ships with 100+ common US employer sponsorship phrases covering H1B, OPT/CPT, green card, and citizenship requirements
+4. Custom Phrase Lists — Add and remove your own positive and negative sponsorship phrases at any time
+5. Persistent Storage — Keywords and phrase lists are saved locally and survive browser restarts
+6. Match Counter — Shows exactly how many keyword matches were found on the current page
+7. One-Click Clear — Strips all highlights from the page instantly
+8. Works Everywhere — Compatible with any job board or careers page (LinkedIn, Indeed, Greenhouse, Lever, Workday, and more)
 
 ## Installation Instructions
 ### Normal Use
