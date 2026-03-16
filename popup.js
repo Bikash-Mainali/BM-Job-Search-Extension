@@ -29,6 +29,29 @@ const addNegativeBtn = document.getElementById("addNegativeBtn");
 const positiveList = document.getElementById("positiveList");
 const negativeList = document.getElementById("negativeList");
 
+// ── THEME TOGGLE ─────────────────────────────────────────────────────────────
+
+const themeToggle = document.getElementById('themeToggle');
+
+function applyTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    themeToggle.checked = theme === 'dark';
+}
+
+function setTheme(theme) {
+    chrome.storage.local.set({ theme }, () => applyTheme(theme));
+}
+
+function loadTheme() {
+    chrome.storage.local.get(['theme'], (result) => applyTheme(result.theme || 'dark'));
+}
+
+themeToggle.addEventListener('change', () => {
+    setTheme(themeToggle.checked ? 'dark' : 'light');
+});
+
+// ── END THEME TOGGLE ─────────────────────────────────────────────────────────
+
 // --- Sponsorship storage ---
 function getSponsorshipPhrasesFromStorage(callback) {
     chrome.storage.local.get([STORAGE_KEY], (result) => {
@@ -215,7 +238,7 @@ function renderTags() {
     });
     if (keywords.length === 0) {
         emptyMsg.style.display = 'flex';
-        keywordCount.textContent = '0 saved';
+        keywordCount.textContent = '0';
         return;
     }
     emptyMsg.style.display = 'none';
@@ -273,7 +296,7 @@ function removeAllKeywords() {
     showToast('All keywords removed', 'info');
 }
 
-// --- Load saved keywords + show sponsorship info if already detected ---
+// --- Load saved keywords + theme ---
 function loadKeywords() {
     chrome.storage.local.get(['jobKeywords', 'highlightActive', 'autoHighlight', 'lastHighlightResult'], (result) => {
         if (result.jobKeywords && Array.isArray(result.jobKeywords)) {
@@ -291,7 +314,6 @@ if (autoHighlightToggle) {
         const enabled = autoHighlightToggle.checked;
         chrome.storage.local.set({ autoHighlight: enabled }, () => {
             if (!enabled) {
-                // Clear popup sponsorship panel when toggled off
                 const existingInfo = document.getElementById('sponsorshipInfo');
                 if (existingInfo) existingInfo.remove();
                 matchInfo.textContent = '';
@@ -303,8 +325,6 @@ if (autoHighlightToggle) {
 }
 
 // --- Listen for live auto-highlight results pushed from content.js ---
-// Fires when content.js finishes highlighting after page load or SPA nav,
-// so the popup panel updates without needing a manual click.
 chrome.runtime.onMessage.addListener((message) => {
     if (message.action !== 'autoHighlightResult') return;
     if (!message.sponsorship) {
@@ -383,4 +403,5 @@ highlightBtn.addEventListener('click', runHighlight);
 clearBtn.addEventListener('click', clearHighlights);
 
 // --- Init ---
+loadTheme();     // Apply saved theme before anything renders
 loadKeywords();

@@ -7,104 +7,137 @@ const STORAGE_KEY = "sponsorshipKeywords";
   const BANNER_ID = 'jobspot-sponsorship-banner';
 
   // ── Styles ───────────────────────────────────────────────────────────────
-  function injectStyles() {
-    if (document.getElementById(STYLE_ID)) return;
+  function injectStyles(theme = 'dark') {
+    if (document.getElementById(STYLE_ID)) {
+      document.getElementById(STYLE_ID).remove(); // remove so theme can update
+    }
+
+    const isDark = theme === 'dark';
+
+    const vars = isDark ? {
+      bannerBg:      '#1a1c23',
+      bannerColor:   '#e8eaf0',
+      headerColor:   '#9da3b4',
+      closeColor:    '#9da3b4',
+      closeHover:    '#ffffff',
+      divider:       'rgba(255,255,255,0.07)',
+      liColor:       '#c8cad4',
+      liBg:          'rgba(255,255,255,0.05)',
+      shadow:        '0 8px 32px rgba(0,0,0,0.45)',
+    } : {
+      bannerBg:      '#ffffff',
+      bannerColor:   '#1a1c2e',
+      headerColor:   '#7a8099',
+      closeColor:    '#7a8099',
+      closeHover:    '#1a1c2e',
+      divider:       'rgba(0,0,0,0.08)',
+      liColor:       '#3a3d52',
+      liBg:          'rgba(0,0,0,0.04)',
+      shadow:        '0 8px 32px rgba(0,0,0,0.15)',
+    };
+
     const style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = `
-      .${MARK_CLASS} {
-        background: #f0c040 !important;
-        color: #0d0f14 !important;
-        border-radius: 3px !important;
-        padding: 1px 2px !important;
-        font-weight: 600 !important;
-        box-shadow: 0 0 0 2px rgba(240,192,64,0.35) !important;
-      }
+    .${MARK_CLASS} {
+      background: #f0c040 !important;
+      color: #0d0f14 !important;
+      border-radius: 3px !important;
+      padding: 1px 2px !important;
+      font-weight: 600 !important;
+      box-shadow: 0 0 0 2px rgba(240,192,64,0.35) !important;
+    }
 
-      #${BANNER_ID} {
-        position: fixed;
-        top: 24px;
-        right: 24px;
-        z-index: 2147483647;
-        max-width: 340px;
-        background: #1a1c23;
-        border-radius: 12px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        font-size: 13px;
-        color: #e8eaf0;
-        overflow: hidden;
-        animation: jobspot-slide-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
-      }
+    #${BANNER_ID} {
+      position: fixed;
+      top: 5px;
+      right: 10px;
+      z-index: 2147483647;
+      max-width: 340px;
+      background: ${vars.bannerBg};
+      border-radius: 12px;
+      box-shadow: ${vars.shadow};
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 13px;
+      color: ${vars.bannerColor};
+      overflow: hidden;
+      animation: jobspot-slide-in 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
 
-      @keyframes jobspot-slide-in {
-        from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-        to   { opacity: 1; transform: translateY(0)   scale(1);    }
-      }
+    @keyframes jobspot-slide-in {
+      from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
-      #${BANNER_ID} .jb-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 10px 14px 8px;
-        border-bottom: 1px solid rgba(255,255,255,0.07);
-        font-weight: 700;
-        font-size: 12px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-        color: #9da3b4;
-      }
+    #${BANNER_ID} .jb-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px 8px;
+      border-bottom: 1px solid ${vars.divider};
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: ${vars.headerColor};
+    }
 
-      #${BANNER_ID} .jb-close {
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: #9da3b4;
-        font-size: 16px;
-        line-height: 1;
-        padding: 0 2px;
-        transition: color 0.15s;
-      }
-      #${BANNER_ID} .jb-close:hover { color: #fff; }
+    #${BANNER_ID} .jb-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: ${vars.closeColor};
+      font-size: 16px;
+      line-height: 1;
+      padding: 0 2px;
+      transition: color 0.15s;
+    }
+    #${BANNER_ID} .jb-close:hover { color: ${vars.closeHover}; }
 
-      #${BANNER_ID} .jb-section {
-        padding: 10px 14px;
-      }
-      #${BANNER_ID} .jb-section + .jb-section {
-        border-top: 1px solid rgba(255,255,255,0.07);
-      }
+    #${BANNER_ID} .jb-section {
+      padding: 10px 14px;
+    }
+    #${BANNER_ID} .jb-section + .jb-section {
+      border-top: 1px solid ${vars.divider};
+    }
 
-      #${BANNER_ID} .jb-label {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-weight: 600;
-        font-size: 12px;
-        margin-bottom: 6px;
-      }
+    #${BANNER_ID} .jb-label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
 
-      #${BANNER_ID} .jb-label.positive { color: #4caf7d; }
-      #${BANNER_ID} .jb-label.negative { color: #e05c5c; }
+    #${BANNER_ID} .jb-label.positive { color: #4caf7d; }
+    #${BANNER_ID} .jb-label.negative { color: #e05c5c; }
 
-      #${BANNER_ID} ul {
-        margin: 0;
-        padding: 0 0 0 4px;
-        list-style: none;
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-      }
+    #${BANNER_ID} ul {
+      margin: 0;
+      padding: 0 0 0 4px;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
 
-      #${BANNER_ID} ul li {
-        font-size: 12px;
-        color: #c8cad4;
-        padding: 3px 8px;
-        background: rgba(255,255,255,0.05);
-        border-radius: 5px;
-        line-height: 1.4;
-      }
-    `;
+    #${BANNER_ID} ul li {
+      font-size: 12px;
+      color: ${vars.liColor};
+      padding: 3px 8px;
+      background: ${vars.liBg};
+      border-radius: 5px;
+      line-height: 1.4;
+    }
+  `;
     document.head.appendChild(style);
+  }
+
+  function injectStylesWithTheme() {
+    chrome.storage.local.get(['theme'], (result) => {
+      injectStyles(result.theme || 'dark'); // result.theme, with 'dark' as fallback
+    });
   }
 
   // ── Clear all highlights ──────────────────────────────────────────────────
@@ -205,7 +238,7 @@ const STORAGE_KEY = "sponsorshipKeywords";
 
       if (result.autoHighlight && hasKeywords) {
         // Toggle ON + keywords present: highlight keywords AND detect sponsorship
-        injectStyles();
+        injectStylesWithTheme();
         clearHighlights();
         highlightKeywords(result.jobKeywords).then(data => {
           publishResult(data);
@@ -257,7 +290,7 @@ const STORAGE_KEY = "sponsorshipKeywords";
           const hasKeywords = result.jobKeywords && result.jobKeywords.length > 0;
 
           if (hasKeywords) {
-            injectStyles();
+            injectStylesWithTheme();
             clearHighlights();
             highlightKeywords(result.jobKeywords).then(data => {
               publishResult(data);
@@ -316,7 +349,7 @@ const STORAGE_KEY = "sponsorshipKeywords";
   // ── Message listener ──────────────────────────────────────────────────────
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'highlight') {
-      injectStyles();
+      injectStylesWithTheme();
       clearHighlights();
       highlightKeywords(message.keywords).then(result => {
         publishResult(result);
